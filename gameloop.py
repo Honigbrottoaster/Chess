@@ -22,11 +22,11 @@ class Game:
                 sys.exit()
     
     def draw(self):
-        self.screen.fill("green")
         self.board.draw(self)
 
 
     def update(self):
+        self.board.loadPositionFromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
         pygame.display.update()
         self.clock.tick(60)
 
@@ -34,8 +34,18 @@ class Board:
     def __init__(self):
         self.board = [8, 8]
 
+    def loadPositionFromFEN(self, fen):
+        split_fen = fen.split()
+        for row in split_fen[0].split('/'):
+            for char in row:
+                if char == 'p':
+                    print("Schwarzer Bauer gefunden")
+
     def draw(self, game):
         for i in range(8):
             for j in range(8):
-                farbe = (255, 255, 255) if (i + j) % 2 == 0 else (0, 0, 0)
-                pygame.draw.rect(game.screen, farbe, (j * FIELD_SIZE, i * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE))
+                if (i + j) % 2 == 0:
+                    color = (255, 255, 255) 
+                else: 
+                    color = (169, 169, 169)
+                pygame.draw.rect(game.screen, color, (j * FIELD_SIZE, i * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE))
